@@ -24,6 +24,7 @@ public class HR {
 
     @OneToMany(mappedBy="HR",cascade= CascadeType.ALL)
     private List<Employee> employees;
+
     private List<Duty>dutiesAssigned;
 
     public Long getId() {
