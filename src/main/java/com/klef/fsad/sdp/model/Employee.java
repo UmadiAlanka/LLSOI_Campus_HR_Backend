@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 
 public class Employee {
     @Id
+    @Column(name="emp_id")
     private Long id;
     @Column(name="emp_name",nullable=false)
     private String name;
