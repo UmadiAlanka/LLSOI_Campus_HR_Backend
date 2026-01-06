@@ -1,4 +1,4 @@
-package com.klef.fsad.sdp;
+package com.klef.fsad.sdp.repository;
 
 import com.klef.fsad.sdp.model.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
