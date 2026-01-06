@@ -1,12 +1,7 @@
 package com.klef.fsad.sdp.model;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="employee_table")
@@ -35,10 +30,15 @@ public class Employee {
     private String password;
     @Column(name="emp_contact",nullable=false, unique = true)
     private String contact;
+
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Leave> leave;
     @OneToMany(mappedBy="employee",cascade= CascadeType.ALL)
     private List<Duty> duty;
+    @ManyToOne
+    @JoinColumn(name="hr_id")
+    private HR hr;
+
 
     public Long getId() {
         return id;

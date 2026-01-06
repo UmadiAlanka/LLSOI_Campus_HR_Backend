@@ -8,6 +8,7 @@ import java.util.List;
 @Table(name="hr_table")
 public class HR {
     @Id
+    @Column(name="hr_id")
     private Long id;
     @Column(name="hr_name",nullable=false)
     private String name;
