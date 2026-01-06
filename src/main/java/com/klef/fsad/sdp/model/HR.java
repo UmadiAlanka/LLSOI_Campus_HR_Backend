@@ -25,6 +25,7 @@ public class HR {
     @OneToMany(mappedBy="HR",cascade= CascadeType.ALL)
     private List<Employee> employees;
 
+    @OneToMany(mappedBy ="assingedByHR", cascade = CascadeType.ALL)
     private List<Duty>dutiesAssigned;
 
     public Long getId() {
