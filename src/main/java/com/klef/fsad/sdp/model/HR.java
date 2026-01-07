@@ -1,33 +1,44 @@
 package com.klef.fsad.sdp.model;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
-@Table(name="hr_table")
+@Table(name = "hr_table")
 public class HR {
+
     @Id
-    @Column(name="hr_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hr_id")
     private Long id;
-    @Column(name="hr_name",nullable=false)
+
+    @Column(name = "hr_name", nullable = false)
     private String name;
-    @Column(name="hr_email",nullable=false,unique = true)
+
+    @Column(name = "hr_email", nullable = false, unique = true)
     private String email;
-    @Column(name="hr_username",nullable=false,unique = true)
+
+    @Column(name = "hr_username", nullable = false, unique = true)
     private String username;
-    @Column(name="hr_password",nullable=false)
+
+    @Column(name = "hr_password", nullable = false)
     private String password;
-    @Column(name="hr_dept",nullable=false)
+
+    @Column(name = "hr_dept", nullable = false)
     private String department;
-    @Column(name="hr_contact",nullable=false,unique = true)
+
+    @Column(name = "hr_contact", nullable = false, unique = true)
     private String contact;
 
-    @OneToMany(mappedBy="HR",cascade= CascadeType.ALL)
+    // One HR → Many Employees
+    @OneToMany(mappedBy = "hr", cascade = CascadeType.ALL)
     private List<Employee> employees;
 
-    @OneToMany(mappedBy ="assingedByHR", cascade = CascadeType.ALL)
-    private List<Duty>dutiesAssigned;
+    // One HR → Many Duties
+    @OneToMany(mappedBy = "assignedByHR", cascade = CascadeType.ALL)
+    private List<Duty> dutiesAssigned;
+
+    // Getters & Setters
 
     public Long getId() {
         return id;
@@ -108,11 +119,8 @@ public class HR {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", department='" + department + '\'' +
                 ", contact='" + contact + '\'' +
-                ", employees=" + employees +
-                ", dutiesAssigned=" + dutiesAssigned +
                 '}';
     }
 }

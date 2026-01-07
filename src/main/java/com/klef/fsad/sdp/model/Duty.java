@@ -24,6 +24,8 @@ public class Duty {
     @JoinColumn(name="assignedByAdmin")
     private Admin assignedByAdmin;
 
+
+
     public int getId() {
         return id;
     }
