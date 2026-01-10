@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="employee_table")
-
 public class Employee {
     @Id
     @Column(name="emp_id")
@@ -142,6 +141,15 @@ public class Employee {
 
     public void setDuty(List<Duty> duty) {
         this.duty = duty;
+    }
+
+    // ADDED: Missing getter and setter for HR
+    public HR getHr() {
+        return hr;
+    }
+
+    public void setHr(HR hr) {
+        this.hr = hr;
     }
 
     @Override
