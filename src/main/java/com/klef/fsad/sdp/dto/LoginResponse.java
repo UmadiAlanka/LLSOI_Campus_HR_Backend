@@ -8,7 +8,7 @@ public class LoginResponse {
     private String username;
     private String name;
 
-    public LoginResponse(boolean success, String message) {
+    public LoginResponse() {
         this.success = success;
         this.message = message;
     }

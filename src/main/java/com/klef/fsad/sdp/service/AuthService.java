@@ -80,6 +80,6 @@ public class AuthService {
             );
         }
 
-        return new LoginResponse(false, "Invalid username or password");
+        return new LoginResponse();
     }
 }

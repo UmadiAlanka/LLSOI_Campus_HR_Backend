@@ -1,29 +1,33 @@
 package com.klef.fsad.sdp.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
-// ... other imports
 
 @Entity
-@Table(name="leave_table")
+@Table(name = "leave_table")
 public class Leave {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(nullable=false)
+
+    @Column(nullable = false)
     private LocalDate startDate;
-    @Column(nullable=false)
+
+    @Column(nullable = false)
     private LocalDate endDate;
-    @Column(nullable=false)
+
+    @Column(nullable = false)
     private String reason;
-    @Column(nullable=false)
-    private String status;
+
+    @Column(nullable = false)
+    private String status = "PENDING";   // default value
+
     @ManyToOne
-    @JoinColumn(name="emp_id")
+    @JoinColumn(name = "emp_id", nullable = false)
     private Employee employee;
 
-
+    // Getters & Setters
     public int getId() {
         return id;
     }
@@ -80,7 +84,6 @@ public class Leave {
                 ", endDate=" + endDate +
                 ", reason='" + reason + '\'' +
                 ", status='" + status + '\'' +
-                ", employee=" + employee +
                 '}';
     }
 }
