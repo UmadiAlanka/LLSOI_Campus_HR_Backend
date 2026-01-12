@@ -22,6 +22,7 @@ public class EmployeeController {
     // Convert Employee → DTO
     private EmployeeResponseDTO mapToDTO(Employee emp) {
         EmployeeResponseDTO dto = new EmployeeResponseDTO();
+        dto.setId(emp.getId());                       // VERY IMPORTANT
         dto.setEmployeeId(emp.getEmployeeId());
         dto.setName(emp.getName());
         dto.setUsername(emp.getUsername());
@@ -33,22 +34,27 @@ public class EmployeeController {
         return dto;
     }
 
-    // Get all employees (only required fields)
+    // Get all employees
     @GetMapping
-    public List<EmployeeResponseDTO> getAllEmployees() {
-        return employeeService.getAllEmployees()
+    public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
+        List<EmployeeResponseDTO> list = employeeService.getAllEmployees()
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
+
+        return ResponseEntity.ok(list);
     }
 
-    // Get one employee
+    // Get one employee by DB ID
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponseDTO> getEmployeeById(@PathVariable Long id) {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
-        return employee
-                .map(e -> ResponseEntity.ok(mapToDTO(e)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+        if (employee.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(mapToDTO(employee.get()));
     }
 
     // Create employee
@@ -68,7 +74,7 @@ public class EmployeeController {
         return ResponseEntity.ok(mapToDTO(updated));
     }
 
-    // Delete employee
+    // Delete employee by DB ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);

@@ -2,35 +2,35 @@ package com.klef.fsad.sdp.controller;
 
 import com.klef.fsad.sdp.dto.LoginRequest;
 import com.klef.fsad.sdp.dto.LoginResponse;
+import com.klef.fsad.sdp.model.Employee;
+import com.klef.fsad.sdp.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
 
         LoginResponse response = new LoginResponse();
 
-        // Simple hard-coded authentication
-        if ("admin".equals(request.getUsername()) && "admin123".equals(request.getPassword())) {
+        Employee employee = employeeService.login(request.getUsername(), request.getPassword());
+
+        if (employee != null) {
             response.setSuccess(true);
             response.setMessage("Login successful");
-            response.setRole("ADMIN");
-            response.setUserId(1L);
-            response.setUsername("admin");
-            response.setName("Administrator");
-            return ResponseEntity.ok(response);
-        }
-        else if ("hrstaff".equals(request.getUsername()) && "hr123".equals(request.getPassword())) {
-            response.setSuccess(true);
-            response.setMessage("Login successful");
-            response.setRole("HR");
-            response.setUserId(2L);
-            response.setUsername("hrstaff");
-            response.setName("HR Staff");
+            response.setUserId(employee.getId());
+            response.setUsername(employee.getUsername());
+            response.setName(employee.getName());
+            response.setRole(employee.getRole());
+
             return ResponseEntity.ok(response);
         }
 

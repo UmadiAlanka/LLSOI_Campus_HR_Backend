@@ -57,4 +57,14 @@ public class EmployeeService {
     public long getTotalEmployeeCount() {
         return employeeRepository.count();
     }
+    public Employee login(String username, String password) {
+        Optional<Employee> emp = employeeRepository.findByUsername(username);
+
+        if (emp.isPresent()) {
+            if (emp.get().getPassword().equals(password)) {
+                return emp.get();
+            }
+        }
+        return null;
+    }
 }
