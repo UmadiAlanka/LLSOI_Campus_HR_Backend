@@ -7,12 +7,8 @@ import jakarta.persistence.*;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "emp_id")
-    private Long id;
-
-    @Column(name = "employee_id", unique = true)
-    private String employeeId;
+    @Column(name = "employee_id", nullable = false, unique = true)
+    private String employeeId;   // EMP-001, EMP-002 ...
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -20,11 +16,11 @@ public class Employee {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "contact_number", nullable = false, unique = true)
+    @Column(name = "contact_number", nullable = false)
     private String contactNumber;
 
     @Column(name = "role", nullable = false)
-    private String role;   // ADMIN, HR, EMPLOYEE
+    private String role;
 
     @Column(name = "job")
     private String job;
@@ -42,18 +38,10 @@ public class Employee {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "hr_id")
+    @JoinColumn(name = "hr_id", referencedColumnName = "hr_id")
     private HR hr;
 
     // ================== Getters & Setters ==================
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getEmployeeId() {
         return employeeId;
@@ -119,7 +107,7 @@ public class Employee {
         this.username = username;
     }
 
-    // ⚠ Later you should encrypt password using BCrypt
+    // Later encrypt using BCrypt
     public String getPassword() {
         return password;
     }

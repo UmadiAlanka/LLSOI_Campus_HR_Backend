@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,10 +20,9 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // Convert Employee → DTO
+    // Convert Entity -> DTO
     private EmployeeResponseDTO mapToDTO(Employee emp) {
         EmployeeResponseDTO dto = new EmployeeResponseDTO();
-        dto.setId(emp.getId());                       // VERY IMPORTANT
         dto.setEmployeeId(emp.getEmployeeId());
         dto.setName(emp.getName());
         dto.setUsername(emp.getUsername());
@@ -34,50 +34,75 @@ public class EmployeeController {
         return dto;
     }
 
-    // Get all employees
+    // ================== GET ALL EMPLOYEES ==================
     @GetMapping
-    public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
-        List<EmployeeResponseDTO> list = employeeService.getAllEmployees()
-                .stream()
+    public ResponseEntity<?> getAllEmployees() {
+        List<Employee> employees = employeeService.getAllEmployees();
+
+        List<EmployeeResponseDTO> dtoList = employees.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Employees fetched successfully",
+                "data", dtoList
+        ));
     }
 
-    // Get one employee by DB ID
-    @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResponseDTO> getEmployeeById(@PathVariable Long id) {
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
+    // ================== GET ONE EMPLOYEE ==================
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<?> getEmployeeByEmployeeId(@PathVariable String employeeId) {
+        Optional<Employee> employee = employeeService.getEmployeeByEmployeeId(employeeId);
 
         if (employee.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(Map.of(
+                    "success", false,
+                    "message", "Employee not found"
+            ));
         }
 
-        return ResponseEntity.ok(mapToDTO(employee.get()));
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "data", mapToDTO(employee.get())
+        ));
     }
 
-    // Create employee
+    // ================== CREATE EMPLOYEE ==================
     @PostMapping
-    public ResponseEntity<EmployeeResponseDTO> createEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
         Employee saved = employeeService.createEmployee(employee);
-        return ResponseEntity.ok(mapToDTO(saved));
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Employee created successfully",
+                "data", mapToDTO(saved)
+        ));
     }
 
-    // Update employee
-    @PutMapping("/{id}")
-    public ResponseEntity<EmployeeResponseDTO> updateEmployee(
-            @PathVariable Long id,
+    // ================== UPDATE EMPLOYEE ==================
+    @PutMapping("/{employeeId}")
+    public ResponseEntity<?> updateEmployee(
+            @PathVariable String employeeId,
             @RequestBody Employee employee) {
 
-        Employee updated = employeeService.updateEmployee(id, employee);
-        return ResponseEntity.ok(mapToDTO(updated));
+        Employee updated = employeeService.updateEmployee(employeeId, employee);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Employee updated successfully",
+                "data", mapToDTO(updated)
+        ));
     }
 
-    // Delete employee by DB ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
-        employeeService.deleteEmployee(id);
-        return ResponseEntity.noContent().build();
+    // ================== DELETE EMPLOYEE ==================
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable String employeeId) {
+        employeeService.deleteEmployee(employeeId);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Employee deleted successfully"
+        ));
     }
 }

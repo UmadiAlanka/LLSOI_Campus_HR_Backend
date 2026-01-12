@@ -33,7 +33,7 @@ public class LeaveController {
 
     @PostMapping("/{employeeId}")
     public ResponseEntity<ApiResponse<Leave>> requestLeave(
-            @PathVariable Long employeeId,
+            @PathVariable String employeeId,
             @RequestBody Leave leave) {
         try {
             Leave savedLeave = leaveService.requestLeave(employeeId, leave);
@@ -47,7 +47,7 @@ public class LeaveController {
 
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<ApiResponse<List<Leave>>> getEmployeeLeaves(
-            @PathVariable Long employeeId) {
+            @PathVariable String employeeId) {
         try {
             List<Leave> leaves = leaveService.getLeavesByEmployee(employeeId);
             return ResponseEntity.ok(

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
     @Column(nullable = false,unique = true)
     private String username;
     @Column(nullable = false)
@@ -16,11 +16,11 @@ public class Admin {
     @Column(nullable = false,unique = true)
     private String email;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

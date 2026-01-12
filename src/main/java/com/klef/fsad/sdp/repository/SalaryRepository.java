@@ -19,7 +19,7 @@ public interface SalaryRepository extends JpaRepository<Salary, Long> {
     List<Salary> findByEmployee(Employee employee);
 
     // This is what your SalaryService is calling
-    List<Salary> findByEmployeeId(Long employeeId);
+    List<Salary> findByEmployeeEmployeeId(String employeeId);
 
     @Query("""
         SELECT s FROM Salary s 

@@ -23,7 +23,7 @@ public class AttendanceService {
     private EmployeeRepository employeeRepository;
 
     // Mark attendance (Clock In)
-    public Attendance clockIn(Long employeeId, String markedBy) {
+    public Attendance clockIn(String employeeId, String markedBy) {
         Optional<Employee> empOpt = employeeRepository.findById(employeeId);
         if (empOpt.isEmpty()) {
             throw new RuntimeException("Employee not found");
@@ -50,7 +50,7 @@ public class AttendanceService {
     }
 
     // Clock Out
-    public Attendance clockOut(Long employeeId) {
+    public Attendance clockOut(String employeeId) {
         Optional<Employee> empOpt = employeeRepository.findById(employeeId);
         if (empOpt.isEmpty()) {
             throw new RuntimeException("Employee not found");
@@ -83,7 +83,7 @@ public class AttendanceService {
     }
 
     // Get attendance by employee and date
-    public Optional<Attendance> getAttendanceByEmployeeAndDate(Long employeeId, LocalDate date) {
+    public Optional<Attendance> getAttendanceByEmployeeAndDate(String employeeId, LocalDate date) {
         Optional<Employee> empOpt = employeeRepository.findById(employeeId);
         if (empOpt.isEmpty()) {
             return Optional.empty();
@@ -92,7 +92,7 @@ public class AttendanceService {
     }
 
     // Get all attendance for an employee
-    public List<Attendance> getEmployeeAttendance(Long employeeId) {
+    public List<Attendance> getEmployeeAttendance(String employeeId) {
         Optional<Employee> empOpt = employeeRepository.findById(employeeId);
         if (empOpt.isEmpty()) {
             throw new RuntimeException("Employee not found");
@@ -101,7 +101,7 @@ public class AttendanceService {
     }
 
     // Get attendance within date range
-    public List<Attendance> getAttendanceByDateRange(Long employeeId, LocalDate startDate, LocalDate endDate) {
+    public List<Attendance> getAttendanceByDateRange(String employeeId, LocalDate startDate, LocalDate endDate) {
         Optional<Employee> empOpt = employeeRepository.findById(employeeId);
         if (empOpt.isEmpty()) {
             throw new RuntimeException("Employee not found");
@@ -134,7 +134,7 @@ public class AttendanceService {
     }
 
     // Get working days count for salary calculation
-    public int getWorkingDaysCount(Long employeeId, int year, int month) {
+    public int getWorkingDaysCount(String employeeId, int year, int month) {
         Optional<Employee> empOpt = employeeRepository.findById(employeeId);
         if (empOpt.isEmpty()) {
             return 0;
@@ -143,7 +143,7 @@ public class AttendanceService {
     }
 
     // Get leave count for salary calculation
-    public int getLeaveCount(Long employeeId, int year, int month) {
+    public int getLeaveCount(String employeeId, int year, int month) {
         Optional<Employee> empOpt = employeeRepository.findById(employeeId);
         if (empOpt.isEmpty()) {
             return 0;

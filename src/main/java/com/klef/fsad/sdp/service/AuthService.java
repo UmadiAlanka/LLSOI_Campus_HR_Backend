@@ -26,7 +26,8 @@ public class AuthService {
     private EmployeeRepository employeeRepository;
 
     public LoginResponse authenticate(LoginRequest request) {
-        // Check in Admin table
+
+        // -------- ADMIN LOGIN --------
         Optional<Admin> adminOpt = adminRepository.findAll().stream()
                 .filter(admin -> admin.getUsername().equals(request.getUsername())
                         && admin.getPassword().equals(request.getPassword()))
@@ -38,13 +39,13 @@ public class AuthService {
                     true,
                     "Login successful",
                     "ADMIN",
-                    (long) admin.getId(),
+                    String.valueOf(admin.getId()),   // convert to String for consistency
                     admin.getUsername(),
                     "Administrator"
             );
         }
 
-        // Check in HR table
+        // -------- HR LOGIN --------
         Optional<HR> hrOpt = hrRepository.findAll().stream()
                 .filter(hr -> hr.getUsername().equals(request.getUsername())
                         && hr.getPassword().equals(request.getPassword()))
@@ -56,13 +57,13 @@ public class AuthService {
                     true,
                     "Login successful",
                     "HR",
-                    hr.getId(),
+                    String.valueOf(hr.getId()),      // convert to String
                     hr.getUsername(),
                     hr.getName()
             );
         }
 
-        // Check in Employee table
+        // -------- EMPLOYEE LOGIN --------
         Optional<Employee> empOpt = employeeRepository.findAll().stream()
                 .filter(emp -> emp.getUsername().equals(request.getUsername())
                         && emp.getPassword().equals(request.getPassword()))
@@ -74,12 +75,13 @@ public class AuthService {
                     true,
                     "Login successful",
                     "EMPLOYEE",
-                    emp.getId(),
+                    emp.getEmployeeId(),            // use String employeeId directly
                     emp.getUsername(),
                     emp.getName()
             );
         }
 
-        return new LoginResponse();
+        // -------- FAILED LOGIN --------
+        return new LoginResponse(false, "Invalid username or password", null, null, null, null);
     }
 }

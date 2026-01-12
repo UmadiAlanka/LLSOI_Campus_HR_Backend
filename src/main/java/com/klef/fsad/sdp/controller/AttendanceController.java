@@ -22,7 +22,7 @@ public class AttendanceController {
 
     @PostMapping("/clock-in")
     public ResponseEntity<ApiResponse<Attendance>> clockIn(
-            @RequestParam Long employeeId,
+            @RequestParam String employeeId,
             @RequestParam String markedBy) {
         try {
             Attendance attendance = attendanceService.clockIn(employeeId, markedBy);
@@ -36,7 +36,7 @@ public class AttendanceController {
     }
 
     @PostMapping("/clock-out/{employeeId}")
-    public ResponseEntity<ApiResponse<Attendance>> clockOut(@PathVariable Long employeeId) {
+    public ResponseEntity<ApiResponse<Attendance>> clockOut(@PathVariable String employeeId) {
         try {
             Attendance attendance = attendanceService.clockOut(employeeId);
             return ResponseEntity.ok(
@@ -50,7 +50,7 @@ public class AttendanceController {
 
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<ApiResponse<List<Attendance>>> getEmployeeAttendance(
-            @PathVariable Long employeeId) {
+            @PathVariable String employeeId) {
         try {
             List<Attendance> attendance = attendanceService.getEmployeeAttendance(employeeId);
             return ResponseEntity.ok(

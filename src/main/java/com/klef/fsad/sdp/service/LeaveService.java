@@ -34,7 +34,7 @@ public class LeaveService {
     }
 
     // Request a new leave
-    public Leave requestLeave(Long employeeId, Leave leave) {
+    public Leave requestLeave(String employeeId, Leave leave) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
@@ -44,7 +44,7 @@ public class LeaveService {
     }
 
     // Get leaves by employee
-    public List<Leave> getLeavesByEmployee(Long employeeId) {
+    public List<Leave> getLeavesByEmployee(String employeeId) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return leaveRepository.findByEmployee(employee);

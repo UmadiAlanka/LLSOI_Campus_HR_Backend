@@ -21,7 +21,7 @@ public class SalaryService {
         return salaryRepository.findByStatus(status);
     }
 
-    public List<Salary> getEmployeeSalaries(Long employeeId) {
-        return salaryRepository.findByEmployeeId(employeeId);
+    public List<Salary> getEmployeeSalaries(String employeeId) {
+        return salaryRepository.findByEmployeeEmployeeId(employeeId);
     }
 }

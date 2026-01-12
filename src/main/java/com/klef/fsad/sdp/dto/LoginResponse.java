@@ -4,7 +4,7 @@ public class LoginResponse {
     private boolean success;
     private String message;
     private String role; // ADMIN, HR, EMPLOYEE
-    private Long userId;
+    private String userId;
     private String username;
     private String name;
 
@@ -13,7 +13,7 @@ public class LoginResponse {
         this.message = message;
     }
 
-    public LoginResponse(boolean success, String message, String role, Long userId, String username, String name) {
+    public LoginResponse(boolean success, String message, String role, String userId, String username, String name) {
         this.success = success;
         this.message = message;
         this.role = role;
@@ -29,8 +29,8 @@ public class LoginResponse {
     public void setMessage(String message) { this.message = message; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getName() { return name; }

@@ -26,7 +26,7 @@ public class AuthController {
         if (employee != null) {
             response.setSuccess(true);
             response.setMessage("Login successful");
-            response.setUserId(employee.getId());
+            response.setUserId(employee.getEmployeeId());
             response.setUsername(employee.getUsername());
             response.setName(employee.getName());
             response.setRole(employee.getRole());

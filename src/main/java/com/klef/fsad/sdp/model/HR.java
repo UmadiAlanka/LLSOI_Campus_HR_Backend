@@ -8,8 +8,9 @@ import java.util.List;
 public class HR {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hr_id")
     private Long id;
+
 
     private String name;
     private String email;
