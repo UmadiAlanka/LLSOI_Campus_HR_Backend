@@ -1,14 +1,16 @@
 package com.klef.fsad.sdp.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employee_table")
 public class Employee {
 
     @Id
-    @Column(name = "employee_id", nullable = false, unique = true)
-    private String employeeId;   // EMP-001, EMP-002 ...
+    // Standardizing to emp_id to resolve the "missing default value" and mapping errors
+    @Column(name = "emp_id", nullable = false, unique = true)
+    private String employeeId;   // e.g., EMP-001, EMP-002
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -36,6 +38,13 @@ public class Employee {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    // Fields for Forgot Password functionality
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "token_expiry_date")
+    private LocalDateTime tokenExpiryDate;
 
     @ManyToOne
     @JoinColumn(name = "hr_id", referencedColumnName = "hr_id")
@@ -107,7 +116,6 @@ public class Employee {
         this.username = username;
     }
 
-    // Later encrypt using BCrypt
     public String getPassword() {
         return password;
     }
@@ -116,19 +124,35 @@ public class Employee {
         this.password = password;
     }
 
-    public HR getHr() {
-        return hr;
-    }
-
-    public void setHr(HR hr) {
-        this.hr = hr;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public LocalDateTime getTokenExpiryDate() {
+        return tokenExpiryDate;
+    }
+
+    public void setTokenExpiryDate(LocalDateTime tokenExpiryDate) {
+        this.tokenExpiryDate = tokenExpiryDate;
+    }
+
+    public HR getHr() {
+        return hr;
+    }
+
+    public void setHr(HR hr) {
+        this.hr = hr;
     }
 }

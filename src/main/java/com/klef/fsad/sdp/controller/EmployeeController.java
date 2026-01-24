@@ -14,13 +14,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/employees")
-@CrossOrigin(origins = "http://localhost:3000")
+// Ensure all frontend ports (3000, 3001, 5173) are allowed as per your properties
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001", "http://localhost:5173"})
 public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
 
-    // Convert Entity -> DTO
+    // Helper: Convert Entity -> DTO
     private EmployeeResponseDTO mapToDTO(Employee emp) {
         EmployeeResponseDTO dto = new EmployeeResponseDTO();
         dto.setEmployeeId(emp.getEmployeeId());
@@ -37,17 +38,24 @@ public class EmployeeController {
     // ================== GET ALL EMPLOYEES ==================
     @GetMapping
     public ResponseEntity<?> getAllEmployees() {
-        List<Employee> employees = employeeService.getAllEmployees();
+        try {
+            List<Employee> employees = employeeService.getAllEmployees();
 
-        List<EmployeeResponseDTO> dtoList = employees.stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+            List<EmployeeResponseDTO> dtoList = employees.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
 
-        return ResponseEntity.ok(Map.of(
-                "success", true,
-                "message", "Employees fetched successfully",
-                "data", dtoList
-        ));
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Employees fetched successfully",
+                    "data", dtoList
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of(
+                    "success", false,
+                    "message", "Error fetching employees: " + e.getMessage()
+            ));
+        }
     }
 
     // ================== GET ONE EMPLOYEE ==================
@@ -71,13 +79,19 @@ public class EmployeeController {
     // ================== CREATE EMPLOYEE ==================
     @PostMapping
     public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
-        Employee saved = employeeService.createEmployee(employee);
-
-        return ResponseEntity.ok(Map.of(
-                "success", true,
-                "message", "Employee created successfully",
-                "data", mapToDTO(saved)
-        ));
+        try {
+            Employee saved = employeeService.createEmployee(employee);
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Employee created successfully",
+                    "data", mapToDTO(saved)
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(Map.of(
+                    "success", false,
+                    "message", e.getMessage()
+            ));
+        }
     }
 
     // ================== UPDATE EMPLOYEE ==================
@@ -85,24 +99,35 @@ public class EmployeeController {
     public ResponseEntity<?> updateEmployee(
             @PathVariable String employeeId,
             @RequestBody Employee employee) {
-
-        Employee updated = employeeService.updateEmployee(employeeId, employee);
-
-        return ResponseEntity.ok(Map.of(
-                "success", true,
-                "message", "Employee updated successfully",
-                "data", mapToDTO(updated)
-        ));
+        try {
+            Employee updated = employeeService.updateEmployee(employeeId, employee);
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Employee updated successfully",
+                    "data", mapToDTO(updated)
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(Map.of(
+                    "success", false,
+                    "message", e.getMessage()
+            ));
+        }
     }
 
     // ================== DELETE EMPLOYEE ==================
     @DeleteMapping("/{employeeId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable String employeeId) {
-        employeeService.deleteEmployee(employeeId);
-
-        return ResponseEntity.ok(Map.of(
-                "success", true,
-                "message", "Employee deleted successfully"
-        ));
+        try {
+            employeeService.deleteEmployee(employeeId);
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Employee deleted successfully"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(Map.of(
+                    "success", false,
+                    "message", e.getMessage()
+            ));
+        }
     }
 }
